@@ -9,28 +9,30 @@ import {
 import { styles } from "./styles";
 
 import { Participant } from "../../Components/Participant";
+import React, { useState } from "react";
 
 export default function Home() {
-  const participants = [
-    "Giovani",
-    "Rodrigo",
-    "Gabriel",
-    "Gustavo",
-    "Diego",
-    "Leonardo",
-    "Carol",
-    "Fabricio",
-    "Lucca",
-    "Livisson",
-  ];
+  const [participants, setParticipants] = useState<string[]>([]);
+  const [participantName, setParticipantName] = useState("");
 
   function handleParticipantAdd() {
-    if (participants.includes("Giovani")) {
+    if (participants.includes(participantName)) {
       return Alert.alert(
         "Participante existe",
         "Já existe um participante na lista com esse nome."
       );
     }
+
+    if (!participantName) {
+      return Alert.alert(
+        "Nome em branco",
+        "É preciso escrever um nome para adicionar à lista."
+      );
+    }
+
+    setParticipants((prevState) => [...prevState, participantName]);
+    setParticipantName("");
+    console.log(participants);
   }
 
   function handleParticipantRemove(name: string) {
@@ -57,6 +59,8 @@ export default function Home() {
           style={styles.input}
           placeholder="Nome do participante"
           placeholderTextColor="#6B6B6B"
+          onChangeText={setParticipantName}
+          value={participantName}
         />
 
         <TouchableOpacity style={styles.button} onPress={handleParticipantAdd}>
